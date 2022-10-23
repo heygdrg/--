@@ -37,6 +37,8 @@ except:
     print('invitaion not available')
     sys.exit()
 
+#you can change the value with your's 
+
 util = {"guild_id" : guild_id,
         "webhook_name" : "Raid by bks",
         "message_content" : "@everyone ez raid bro ",

@@ -1,9 +1,13 @@
-import requests
-import threading
-import sys
-import colorama
-import rich
-from rich import * 
+try:
+    import requests
+    import threading
+    import sys
+    import os 
+except:
+    import os 
+    os.system('pip install requests')
+    os.system('pip install threading')
+    os.system('pip install sys')
 
 def getheaders(token):
     headers =     {
@@ -57,12 +61,18 @@ def proxy_scrape(url):
     print(proxy)
 
 def raid(util, url):
+    channel_create = 0
+    webhook_create = 0
+    message_sent = 0    
     def spam():
-        for i in range(30):
+        
+        for i in range(1):
             channel = requests.post(url["channel"].format(guild_id = util['guild_id']),
                         json={"name": util[f"channel_name"],'content': 'raid'},
                         headers =getheaders(util[f"token"]),
                     ).json()
+            channel_create = channel_create + 1
+            os.system(f'Title - RAIDER BOT - Channel create : {channel_create} webhook_create : {webhook_create} message sent : {message_sent}')
             print(channel)
             channel_id = channel['id']
             for i in range(10):
@@ -71,6 +81,8 @@ def raid(util, url):
                             headers =getheaders(util["token"])
                         )
                 if webhook.status_code == 200:
+                    webhook_create = webhook_create + 1
+                    os.system(f'Title - RAIDER BOT - Channel create : {channel_create} webhook_create : {webhook_create} message sent : {message_sent}')
                     pass
                 else:
                     print('error rate limit')
@@ -87,16 +99,19 @@ def raid(util, url):
                                     headers =getheaders(util["token"])
                                 )
                         if message.status_code == 204:
+                            message_sent = message_sent + 1 
+                            os.system(f'Title - RAIDER BOT - Channel create : {channel_create} webhook_create : {webhook_create} message sent : {message_sent}')
                             pass
+                        
                         else:
                             print("An error occured while sending message")
                             print(f"error : {message.json()}")
                             input("Enter anything to close")
                             sys.exit()
     threads = []
-    for i in range(50):
+    for i in range(110):
         t = threading.Thread(target=spam)
         threads.append(t)
         t.start()
 
-raid(util,url)
+raid(util, url)

